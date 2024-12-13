@@ -1,0 +1,40 @@
+<div id="category{{ idCategoria }}" class="tab-pane{% if idCategoria == 1 %} active{% endif %}">
+	<div class="row popup-gallery">
+		{% for imagen in imagenes %}
+			<div class="col-xs-12 col-sm-6 col-md-3">
+				<div class="sol">
+					<a
+						href="{{ imagen.getUrlGaleria() }}" class="gallery">
+						<!-- GetUrlGaleria? -->
+						<img class="img-responsive" src="{{ asset(imagen.getUrlPortfolio()) }}" alt="Category {{ idCategoria }} picture"/>
+					</a>
+					<div class="row box-content">
+						<div class="col-xs-4">
+							<i class="fa fa-eye"></i>
+							{{ imagen.getNumVisualizaciones() }}
+						</div>
+						<div class="col-xs-4">
+							<i class="fa fa-heart"></i>
+							{{ imagen.getNumLikes() }}
+						</div>
+						<div class="col-xs-4">
+							<i class="fa fa-download"></i>
+							{{ imagen.getNumDownloads() }}
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+
+	<nav class="text-center">
+		<ul class="pagination">
+			{% for categoria in 1..3 %}
+				<li class="{% if idCategoria == categoria %}active{% endif %}">
+					<a href="#category{{ categoria }}" data-toggle="tab">Category
+						{{ categoria }}</a>
+				</li>
+			{% endfor %}
+		</ul>
+	</nav>
+</div>
