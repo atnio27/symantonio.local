@@ -7,13 +7,13 @@
 			</p>
 			<h4>Our Main Partners</h4>
 			<hr>
-			<div class="text-muted text-left">
-				{% for asociado in asociados %}
-					<ul class="list-inline">
-						<li><img src="{{ asset(asociado.getUrl()) }}" alt="{{ asociado.getDescripcion() }}"></li>
-						<li>{{ asociado.getNombre() }}</li>
-					</ul>
-				{% endfor %}
+			<div
+				class="text-muted text-left">{# {% for asociado in asociados %}
+										<ul class="list-inline">
+											<li><img src="{{ asset(asociado.getUrl()) }}" alt="{{ asociado.getDescripcion() }}"></li>
+											<li>{{ asociado.getNombre() }}</li>
+										</ul>
+									{% endfor %} #}
 			</div>
 		</div>
 	</div>
