@@ -2,54 +2,49 @@
 
 namespace App\Entity;
 
-use App\Entity\IEntity;
+use App\Repository\CategoriaRepository;
+use Doctrine\ORM\Mapping as ORM;
 
-class Categoria implements IEntity
+#[ORM\Entity(repositoryClass: CategoriaRepository::class)]
+class Categoria
 {
-	private $id = null;
-	private $nombre = "";
-	private $numImagenes = 0;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-	public function __construct($nombre = "", $numImagenes = 0)
-	{
-		$this->nombre = $nombre;
-		$this->numImagenes = $numImagenes;
-	}
+    #[ORM\Column(length: 100)]
+    private ?string $nombre = null;
 
-	public function getId()
-	{
-		return $this->id;
-	}
-	public function getNombre()
-	{
-		return $this->nombre;
-	}
-	public function getNumImagenes()
-	{
-		return $this->numImagenes;
-	}
-	public function setNombre($nombre): Categoria
-	{
-		$this->nombre = $nombre;
-		return $this;
-	}
-	public function setNumImagenes($numImagenes): Categoria
-	{
-		$this->numImagenes = $numImagenes;
-		return $this;
-	}
+    #[ORM\Column]
+    private ?int $numImagenes = null;
 
-	public function toArray(): array
-	{
-		return [
-			'id' => $this->getId(),
-			'nombre' => $this->getNombre(),
-			'numImagenes' => $this->getNumImagenes()
-		];
-	}
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-	public function __toString(): string
-	{
-		return $this->getNombre();
-	}
+    public function getNombre(): ?string
+    {
+        return $this->nombre;
+    }
+
+    public function setNombre(string $nombre): static
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    public function getNumImagenes(): ?int
+    {
+        return $this->numImagenes;
+    }
+
+    public function setNumImagenes(int $numImagenes): static
+    {
+        $this->numImagenes = $numImagenes;
+
+        return $this;
+    }
 }

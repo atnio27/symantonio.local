@@ -2,78 +2,71 @@
 
 namespace App\Entity;
 
-use App\Entity\IEntity;
+use App\Repository\AsociadoRepository;
+use Doctrine\ORM\Mapping as ORM;
 
-class Asociado implements IEntity
+#[ORM\Entity(repositoryClass: AsociadoRepository::class)]
+class Asociado
 {
-	private $id = null;
-	private $nombre = "";
-	private $logo = "";
-	private $descripcion = "";
+    const RUTA_LOGOS_ASOCIADOS = '/../../public/images/asociados/';
 
-	const RUTA_LOGOS_ASOCIADOS = '/images/asociados/';
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-	public function __construct($nombre = "", $logo = "", $descripcion = "")
-	{
-		$this->nombre = $nombre;
-		$this->logo = $logo;
-		$this->descripcion = $descripcion;
-	}
+    #[ORM\Column(length: 100)]
+    private ?string $nombre = null;
 
-	public function toArray(): array
-	{
-		return [
-			'id' => $this->getId(),
-			'nombre' => $this->getNombre(),
-			'logo' => $this->getLogo(),
-			'descripcion' => $this->getDescripcion()
-		];
-	}
+    #[ORM\Column(length: 100)]
+    private ?string $logo = null;
 
-	public function getId()
-	{
-		return $this->id;
-	}
-	public function setId($id)
-	{
-		$this->id = $id;
-		return $this;
-	}
-	public function getNombre()
-	{
-		return $this->nombre;
-	}
-	public function setNombre($nombre)
-	{
-		$this->nombre = $nombre;
-		return $this;
-	}
-	public function getLogo()
-	{
-		return $this->logo;
-	}
-	public function setLogo($logo)
-	{
-		$this->logo = $logo;
-		return $this;
-	}
-	public function getDescripcion()
-	{
-		return $this->descripcion;
-	}
-	public function setDescripcion($descripcion)
-	{
-		$this->descripcion = $descripcion;
-		return $this;
-	}
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $descripcion = null;
 
-	public function getUrl()
-	{
-		return self::RUTA_LOGOS_ASOCIADOS . $this->logo;
-	}
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-	public function __toString()
-	{
-		return $this->descripcion;
-	}
+    public function getNombre(): ?string
+    {
+        return $this->nombre;
+    }
+
+    public function setNombre(string $nombre): static
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(string $logo): static
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    public function getDescripcion(): ?string
+    {
+        return $this->descripcion;
+    }
+
+    public function setDescripcion(?string $descripcion): static
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    public function getUrl()
+    {
+        return self::RUTA_LOGOS_ASOCIADOS . $this->logo;
+    }
 }
