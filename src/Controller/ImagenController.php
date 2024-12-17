@@ -19,4 +19,12 @@ class ImagenController extends AbstractController
             'imagenes' => $imagenes
         ]);
     }
+
+    #[Route('/imagen/{id}', name: 'sym_imagen_show')]
+    public function show(Imagen $imagen): Response
+    {
+        return $this->render('imagen/show.html.twig', [
+            'imagen' => $imagen
+        ]);
+    }
 }
