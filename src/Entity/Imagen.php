@@ -8,10 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ImagenRepository::class)]
 class Imagen
 {
-    const RUTA_IMAGENES_PORTFOLIO = '/public/images/index/portfolio/';
-    const RUTA_IMAGENES_GALERIA = '/public/images/index/gallery/';
-    const RUTA_IMAGENES_CLIENTES = '/public/images/clients/';
-    const RUTA_IMAGENES_SUBIDAS = '/public/images/imagenes_subidas/';
+    const RUTA_IMAGENES_PORTFOLIO = '/images/index/portfolio/';
+    const RUTA_IMAGENES_GALERIA = '/images/index/gallery/';
+    const RUTA_IMAGENES_CLIENTES = '/images/clients/';
+    const RUTA_IMAGENES_SUBIDAS = '/images/imagenes_subidas/';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
