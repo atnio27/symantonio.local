@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Repository\ImagenRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ImagenRepository::class)]
+
 class Imagen
 {
     const RUTA_IMAGENES_PORTFOLIO = '/images/index/portfolio/';
@@ -19,6 +21,11 @@ class Imagen
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    /**
+     * @Assert\File(
+     * mimeTypes={"image/jpeg","image/png"},
+     * mimeTypesMessage = "Solamente se permiten archivos jpeg o png.")
+     */
     private ?string $nombre = null;
 
     #[ORM\Column(length: 255, nullable: true)]
