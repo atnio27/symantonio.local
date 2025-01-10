@@ -3,16 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Imagen;
-use PhpParser\Node\Scalar\MagicConst\File;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\File as ConstraintsFile;
+use Symfony\Component\Validator\Constraints\File;
 
 class ImagenType extends AbstractType
 {
@@ -24,7 +21,7 @@ class ImagenType extends AbstractType
                 'label_attr' => ['class' => 'etiqueta'],
                 'data_class' => null,
                 'constraints' => [
-                    new ConstraintsFile([
+                    new File([
                         'maxSize' => '1024k',
                         'mimeTypes' => [
                             'image/jpeg',

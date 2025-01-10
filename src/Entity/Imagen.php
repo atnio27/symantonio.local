@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Imagen
 {
     const RUTA_IMAGENES_PORTFOLIO = '/images/index/portfolio/';
-    const RUTA_IMAGENES_GALERIA = '/images/index/gallery/';
+    const RUTA_IMAGENES_GALERIA = '/images/galeria/';
     const RUTA_IMAGENES_CLIENTES = '/images/clients/';
     const RUTA_IMAGENES_SUBIDAS = '/images/imagenes_subidas/';
 
