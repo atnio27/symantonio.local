@@ -58,17 +58,18 @@
 									</a>
 								</li>
 
-								{# {% if app.request.pathinfo == '/galeria' %}
-													<li class="active lien">
-												{% else %}
-													<li class="lien">
-												{% endif %}
-													<a href="{{ path('sym_galeria') }}">
-														<i class="fa fa-image sr-icons"></i> Galeria
-													</a>
-												</li> #}
-							</ul>
+								{% if app.request.pathinfo == '/imagen' %}
+									<li class="active lien">
+									{% else %}
+										<li class="lien">
+										{% endif %}
+										<a href="{{ path('app_imagen_index') }}">
+											<i class="fa fa-square sr-icons"></i>
+											Imagen
+										</a>
+									</li>
+								</ul>
+							</div>
 						</div>
-					</div>
-				</nav>
-				<!-- End of Navigation Bar -->
+					</nav>
+					<!-- End of Navigation Bar -->
