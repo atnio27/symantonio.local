@@ -6,31 +6,47 @@
 {% block principal %}
 	<h1>Imagen index</h1>
 
+	<form action="{{ path('app_imagen_index_busqueda') }}" method="post">
+		<label>Búsqueda:</label>
+		<input type="text" name="busqueda" id="busqueda" value="">
+		<input type="submit" value="Buscar">
+	</form>
+
 	<table class="table">
 		<thead>
 			<tr>
-				<th>Id</th>
+				<th>
+					<a href="{{ path("app_imagen_index_ordenado", {ordenacion: 'id'}) }}">Id</a>
+				</th>
 				<th>Nombre</th>
-				<th>Descripcion</th>
+				<th>
+					<a href="{{ path("app_imagen_index_ordenado", {ordenacion: 'descripcion'}) }}">Descripcion</a>
+				</th>
+				<th>
+					<a href="{{ path("app_imagen_index_ordenado", {ordenacion: 'categoria'}) }}">Categoria</a>
+				</th>
+				<th>Imagen</th>
 				<th>NumVisualizaciones</th>
 				<th>NumLikes</th>
 				<th>NumDownloads</th>
-				<th>Categoria</th>
+
 				<th>actions</th>
 			</tr>
 		</thead>
 		<tbody>
-			{% for imagen in imagens %}
+			{% for imagen in imagenes %}
 				<tr>
 					<td>{{ imagen.id }}</td>
 					<td>{{ imagen.nombre }}</td>
+					<td>{{ imagen.descripcion }}</td>
+					<td>{{ imagen.categoria }}</td>
 					<td><img src="{{ asset(imagen.getUrlGaleria()) }}" alt="{{ imagen.nombre }}" width="100px"></td>
 
-					<td>{{ imagen.descripcion }}</td>
+
 					<td>{{ imagen.numVisualizaciones }}</td>
 					<td>{{ imagen.numLikes }}</td>
 					<td>{{ imagen.numDownloads }}</td>
-					<td>{{ imagen.categoria }}</td>
+
 					<td>
 						<a href="{{ path('app_imagen_delete_json', {'id': imagen.id}) }}" class="delete">borrar</a>
 						<a href="{{ path('app_imagen_show', {'id': imagen.id}) }}">show</a>

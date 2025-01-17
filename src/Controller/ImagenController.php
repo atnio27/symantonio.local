@@ -15,11 +15,34 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/imagen')]
 final class ImagenController extends AbstractController
 {
+    #[Route('/orden/{ordenacion}', name: 'app_imagen_index_ordenado', methods: ['GET'])]
     #[Route(name: 'app_imagen_index', methods: ['GET'])]
-    public function index(ImagenRepository $imagenRepository): Response
+
+    public function index(Request $requestStack, ImagenRepository $imagenRepository, string $ordenacion = null): Response
     {
+        if (!is_null($ordenacion)) { // Cuando se establece un tipo de ordenación específico
+            $tipoOrdenacion = 'asc'; // Por defecto si no se había guardado antes en la variable de sesión
+            $session = $requestStack->getSession(); // Abrir la sesión
+            $imagenesOrdenacion = $session->get('imagenesOrdenacion');
+            if (!is_null($imagenesOrdenacion)) { // Comprobamos si ya se había establecido un orden
+                if ($imagenesOrdenacion['ordenacion'] === $ordenacion) // Por si se ha cambiado de campo a ordenar
+                {
+                    if ($imagenesOrdenacion['tipoOrdenacion'] === 'asc')
+                        $tipoOrdenacion = 'desc';
+                }
+            }
+            $session->set('imagenesOrdenacion', [ // Se guarda la ordenación actual
+                'ordenacion' => $ordenacion,
+                'tipoOrdenacion' => $tipoOrdenacion
+            ]);
+        } else { // La primera vez que se entra se establece por defecto la ordenación por id ascendente
+            $ordenacion = 'id';
+            $tipoOrdenacion = 'asc';
+        }
+
+        $imagenes = $imagenRepository->findBy([], [$ordenacion => $tipoOrdenacion]);
         return $this->render('imagen/index.html.twig', [
-            'imagens' => $imagenRepository->findAll(),
+            'imagenes' => $imagenes
         ]);
     }
 
@@ -52,6 +75,16 @@ final class ImagenController extends AbstractController
         ]);
     }
 
+    #[Route('/busqueda', name: 'app_imagen_index_busqueda', methods: ['POST'])]
+    public function busqueda(Request $request, ImagenRepository $imagenRepository): Response
+    {
+        $busqueda = $request->request->get('busqueda');
+        $imagenes = $imagenRepository->findLikeDescripcion($busqueda);
+        return $this->render('imagen/index.html.twig', [
+            'imagenes' => $imagenes
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_imagen_show', methods: ['GET'])]
     public function show(Imagen $imagen): Response
     {
@@ -67,6 +100,15 @@ final class ImagenController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // $file almacena el archivo subido
+            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+            $file = $form['nombre']->getData();
+            // Generamos un nombre único
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            // Move the file to the directory where brochures are stored
+            $file->move($this->getParameter('images_directory_subidas'), $fileName);
+            // Actualizamos el nombre del archivo en el objeto imagen al nuevo generado
+            $imagen->setNombre($fileName);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_imagen_index', [], Response::HTTP_SEE_OTHER);
@@ -88,6 +130,7 @@ final class ImagenController extends AbstractController
 
         return $this->redirectToRoute('app_imagen_index', [], Response::HTTP_SEE_OTHER);
     }
+
 
     #[Route('/{id}', name: 'app_imagen_delete_json', methods: ['DELETE'])]
     public function deleteJson(Imagen $imagen, ImagenRepository $imagenRepository): Response

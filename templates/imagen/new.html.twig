@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Imagen{% endblock %}
+{% block title %}New Imagen
+{% endblock %}
 
-{% block body %}
-    <h1>Create new Imagen</h1>
+{% block principal %}
+	<h1>Create new Imagen</h1>
 
-    {{ include('imagen/_form.html.twig') }}
+	{{ include('imagen/_form.html.twig') }}
 
-    <a href="{{ path('app_imagen_index') }}">back to list</a>
+	<a href="{{ path('app_imagen_index_ordenado') }}">back to list</a>
 {% endblock %}
