@@ -63,11 +63,28 @@
 									{% else %}
 										<li class="lien">
 										{% endif %}
-										<a href="{{ path('app_imagen_index') }}">
-											<i class="fa fa-square sr-icons"></i>
-											Imagen
-										</a>
+										{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+											<a href="{{ path('app_imagen_new') }}">Subir imagen</a>
+											<a href="{{ path('app_imagen_index') }}">Mis imágenes</a>
+										{% else %}
+											<a href="{{ path('app_login') }}">Iniciar sesión</a>
+										{% endif %}
 									</li>
+									{% if is_granted('IS_AUTHENTICATED') %}
+										<li class=" lien">
+											<a href={{ path('app_logout') }}>
+												<i class="fa fa-sign-out sr-icons"></i>
+												Logout -
+												{{app.user.username }}</a>
+										</li>
+									{% else %}
+										<li class=" lien">
+											<a href={{ path('app_login') }}>
+												<i class="fa fa-sign-in sr-icons"></i>
+												Login</a>
+										</li>
+									{% endif %}
+
 								</ul>
 							</div>
 						</div>

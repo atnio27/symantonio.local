@@ -43,6 +43,10 @@ class Imagen
     #[ORM\Column]
     private ?int $categoria = null;
 
+    #[ORM\ManyToOne(inversedBy: 'imagenes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $usuario = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -135,5 +139,17 @@ class Imagen
     public function getUrlSubidas()
     {
         return self::RUTA_IMAGENES_SUBIDAS . $this->getNombre();
+    }
+
+    public function getUsuario(): ?User
+    {
+        return $this->usuario;
+    }
+
+    public function setUsuario(?User $usuario): static
+    {
+        $this->usuario = $usuario;
+
+        return $this;
     }
 }

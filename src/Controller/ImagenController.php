@@ -62,6 +62,10 @@ final class ImagenController extends AbstractController
             // Move the file to the directory where brochures are stored
             $file->move($this->getParameter('images_directory_subidas'), $fileName);
             // Actualizamos el nombre del archivo en el objeto imagen al nuevo generado
+            //Actualizamos el id del usuario que añade la imagen
+            $usuario = $this->getUser();
+            $imagen->setUsuario($usuario);
+
             $imagen->setNombre($fileName);
             $entityManager->persist($imagen);
             $entityManager->flush();
@@ -93,7 +97,7 @@ final class ImagenController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_imagen_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_imagen_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Imagen $imagen, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ImagenType::class, $imagen);
@@ -123,6 +127,8 @@ final class ImagenController extends AbstractController
     #[Route('/{id}', name: 'app_imagen_delete', methods: ['POST'])]
     public function delete(Request $request, Imagen $imagen, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         if ($this->isCsrfTokenValid('delete' . $imagen->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($imagen);
             $entityManager->flush();
@@ -135,6 +141,8 @@ final class ImagenController extends AbstractController
     #[Route('/{id}', name: 'app_imagen_delete_json', methods: ['DELETE'])]
     public function deleteJson(Imagen $imagen, ImagenRepository $imagenRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $imagenRepository->remove($imagen, true);
         return new JsonResponse(['eliminado' => true]);
     }

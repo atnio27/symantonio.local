@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Imagen;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -34,7 +36,40 @@ class ImagenRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findImagenesConCategoria(
+        string $ordenacion,
+        string $tipoOrdenacion,
+        User $usuario
+    ): array {
+        $qb = $this->createQueryBuilder('imagen')
+            ->addSelect('categoria')
+            ->innerJoin('imagen.categoria', 'categoria')
+            ->orderBy('imagen.' . $ordenacion, $tipoOrdenacion);
 
+        $this->addUserFilter($qb, $usuario);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findImagenes(string $busqueda, User $usuario): array
+    {
+        $qb = $this->createQueryBuilder('imagen')
+            ->where('imagen.descripcion LIKE :busqueda')
+            ->setParameter('busqueda', '%' . $busqueda . '%');
+
+        $this->addUserFilter($qb, $usuario);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    // Corrección clave: Usar Doctrine\ORM\QueryBuilder
+    private function addUserFilter(QueryBuilder $qb, User $usuario): void
+    {
+        if (!in_array('ROLE_ADMIN', $usuario->getRoles())) {
+            $qb->andWhere('imagen.usuario = :usuario')
+                ->setParameter('usuario', $usuario);
+        }
+    }
 
     //    /**
     //     * @return Imagen[] Returns an array of Imagen objects
